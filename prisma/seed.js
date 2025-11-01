@@ -1,34 +1,24 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
+import { hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // delete all existing records
-  await prisma.user.deleteMany({
-    where: {
-      id: true
-    }
-  })
-
-  // Create seed data
-  await prisma.user.create({
-    data: {
-      name: "kayla",
-      email: "eduardo.lsoares@gmail.com",
-    }
-  })
-  // Temporary check: list users
-  const users = await prisma.user.findMany();
-  console.log('Users in DB:', users);
-
-  console.log('Database has been seeded!');
+  //const password = await hash("password", 12);
+  const user = await prisma.user.upsert({
+    where: { email: "admin@admin.com" },
+    update: {},
+    create: {
+      email: "admin@admin.com",
+      name: "Admin",
+    },
+  });
+  console.log({ user });
 }
-
 main()
-  .catch((e) => {
+  .then(() => prisma.$disconnect())
+  .catch(async (e) => {
     console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
     await prisma.$disconnect();
+    process.exit(1);
   });
