@@ -1,5 +1,4 @@
 import { HeaderAuth } from "./component/auth"
-import Card from "./component/ui/Card"
 import ProductRow from "./component/layout/ProductRow";
 import Navbar from "./component/layout/Navbar";
 import Divider from "./component/ui/Divider";
