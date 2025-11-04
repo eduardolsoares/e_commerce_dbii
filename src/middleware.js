@@ -1,8 +1,18 @@
 import { withAuth } from "next-auth/middleware"
+const protectedRoutes = ["/account"];
 
 export default withAuth(
   function middleware(req) {
-    console.log(req.nextauth.token)
+    const token = req.nextauth.token;
+      if (!token) {
+        const url = req.nextUrl.clone();
+        url.pathname = '/api/auth/signin';
+        return NextResponse.redirect(url);
+      }
+    const pathname = req.nextUrl.pathname;
+    if (protectedRoutes.includes(pathname) && !token) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   },
   {
   // Matches the pages config in `[...nextauth]`
@@ -12,7 +22,7 @@ export default withAuth(
   },
   callbacks: {
     authorized({req, token}) {
-      if (token) return true;
+      return !!token;
     },
   }
 })
