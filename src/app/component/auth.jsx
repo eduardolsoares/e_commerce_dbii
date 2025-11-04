@@ -1,7 +1,7 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-export function SignInButton() {
+export function SignInWithGoogleButton() {
   return (
     <button
       onClick={() => signIn("google", { callbackUrl : '/account'})}
@@ -49,6 +49,15 @@ export function SignInButton() {
   );
 }
 
+export function SignInButton() {
+  return (
+    <>
+    <a href="/auth/signin" className="text-sm font-medium text-gray-700 hover:text-gray-800">
+      Entrar
+    </a>
+    </>
+  )
+}
 export function SignOutButton({ variant = "dropdown" }) {
   const baseClasses =
     "text-sm text-gray-600 hover:text-gray-800 font-medium hover:bg-gray-50 cursor-pointer transition-colors";

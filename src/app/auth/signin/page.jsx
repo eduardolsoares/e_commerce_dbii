@@ -1,8 +1,8 @@
-import { SignInButton } from "../../component/auth"
+import { SignInWithGoogleButton } from "../../component/auth"
 
 //todo
 export default function SigninPage() {
   return (
-    <SignInButton></SignInButton>
+    <SignInWithGoogleButton></SignInWithGoogleButton>
   )
 }
