@@ -1,15 +1,16 @@
 "use client";
 import { signIn, signOut, useSession } from "next-auth/react";
+import AccountDropdown from "./layout/AccountDropdown";
 
 export function SignInButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="inline-flex items-center gap-2 bg-[#24292F] hover:bg-[#24292F]/90 text-white px-5 py-2 rounded-full font-medium cursor-pointer transition-colors shadow-sm"
+      className="inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-800 px-4 py-1.5 rounded-full text-m font-medium border border-gray-300 cursor-pointer transition-colors"
       aria-label="Sign in with Google"
     >
       <svg
-        className= "w-5 h-5"
+        className="w-5 h-5"
         viewBox="0 0 32 32"
         data-name="Layer 1"
         id="Layer_1"
@@ -51,7 +52,7 @@ export function SignInButton() {
 
 export function SignOutButton({ variant = "dropdown" }) {
   const baseClasses =
-    "text-sm text-gray-600 hover:text-gray-800 font-medium hover:bg-gray-50 cursor-pointer transition-colors";
+    "text-sm text-gray-700 hover:text-black font-medium cursor-pointer transition-all outline-none focus:ring-0 focus:outline-none bg-gray-100";
   const variantClasses = {
     dropdown: "block w-full text-left px-4 py-2",
     inline: "px-3 py-1.5 rounded-md",
@@ -120,33 +121,9 @@ export function HeaderAuth() {
 
   if (session) {
     return (
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            {session.user?.image ? (
-              <img
-                src={session.user.image}
-                alt="Profile"
-                className="w-8 h-8 rounded-full"
-              />
-            ) : (
-              <span className="text-xs font-medium text-gray-600">
-                {(session.user?.name || session.user?.email || "U")
-                  .charAt(0)
-                  .toUpperCase()}
-              </span>
-            )}
-          </div>
-          <div className="hidden sm:block">
-            <div className="text-sm font-medium text-gray-900">
-              {session.user?.name || "User"}
-            </div>
-            <div className="text-xs text-gray-500">{session.user?.email}</div>
-          </div>
-        </div>
-        <SignOutButton variant="inline" />
-      </div>
+      <AccountDropdown />
     );
+
   }
 
   return <SignInButton />;
