@@ -5,8 +5,8 @@ import AccountDropdown from "./layout/AccountDropdown";
 export function SignInButton() {
   return (
     <button
-      onClick={() => signIn("google")}
-      className="inline-flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-800 px-4 py-1.5 rounded-full text-m font-medium border border-gray-300 cursor-pointer transition-colors"
+      onClick={() => signIn("google", { callbackUrl : '/account'})}
+      className="inline-flex items-center gap-2 bg-[#24292F] hover:bg-[#24292F]/90 text-white px-5 py-2 rounded-full font-medium cursor-pointer transition-colors shadow-sm"
       aria-label="Sign in with Google"
     >
       <svg
