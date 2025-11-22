@@ -1,6 +1,5 @@
 "use client";
-import { useState, Fragment} from 'react'
-
+import { useState, Fragment } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -15,135 +14,137 @@ import {
   TabPanel,
   TabPanels,
 } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { HeaderAuth } from '../auth';
+import AccountDropdown from './AccountDropdown';
+import ExpandingSearchBar from './ExpandingSearchBar';
 
-const navigation = {
-  categories: [
-    {
-      id: 'women',
-      name: 'Women',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
-          imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-        },
-        {
-          name: 'Basic Tees',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
-          imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-        },
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Dresses', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Denim', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
-          ],
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Significant Other', href: '#' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'men',
-      name: 'Men',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc:
-            'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-          imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
-        },
-        {
-          name: 'Artwork Tees',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
-          imageAlt:
-            'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
-        },
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
-          ],
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
-  ],
-}
+export default function NavBar() {
+  const [open, setOpen] = useState(false);
 
-export default function Example() {
-  const [open, setOpen] = useState(false)
+  const navigation = {
+    categories: [
+      {
+        id: 'women',
+        name: 'Feminino',
+        featured: [
+          {
+            name: 'Novidades',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
+            imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
+          },
+          {
+            name: 'Camisetas Básicas',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
+            imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
+          },
+        ],
+        sections: [
+          {
+            id: 'clothing',
+            name: 'Roupas',
+            items: [
+              { name: 'Tops', href: '#' },
+              { name: 'Vestidos', href: '#' },
+              { name: 'Calças', href: '#' },
+              { name: 'Sweaters', href: '#' },
+              { name: 'Camisetas', href: '#' },
+              { name: 'Jaquetas', href: '#' },
+              { name: 'Esportivo', href: '#' },
+              { name: 'Explorar', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'Acessórios',
+            items: [
+              { name: 'Relógios', href: '#' },
+              { name: 'Carteiras', href: '#' },
+              { name: 'Bolsas', href: '#' },
+              { name: 'Óculos de Sol', href: '#' },
+              { name: 'Chapéus', href: '#' },
+              { name: 'Cintos', href: '#' },
+            ],
+          },
+          {
+            id: 'brands',
+            name: 'Marcas',
+            items: [
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'men',
+        name: 'Masculino',
+        featured: [
+          {
+            name: 'Novidades',
+            href: '#',
+            imageSrc:
+              'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+            imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
+          },
+          {
+            name: 'Camisetas com Estampa',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
+            imageAlt:
+              'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
+          },
+        ],
+        sections: [
+          {
+            id: 'clothing',
+            name: 'Roupas',
+            items: [
+              { name: 'Calças', href: '#' },
+              { name: 'Sweaters', href: '#' },
+              { name: 'Camisetas', href: '#' },
+              { name: 'Jaquetas', href: '#' },
+              { name: 'Esportivo', href: '#' },
+              { name: 'Explorar', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'Acessórios',
+            items: [
+              { name: 'Relógios', href: '#' },
+              { name: 'Carteiras', href: '#' },
+              { name: 'Bolsas', href: '#' },
+              { name: 'Óculos de Sol', href: '#' },
+              { name: 'Chapéus', href: '#' },
+              { name: 'Cintos', href: '#' },
+            ],
+          },
+          {
+            id: 'brands',
+            name: 'Marcas',
+            items: [
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+            ],
+          },
+        ],
+      },
+    ],
+    pages: [
+      { name: 'Sobre nós', href: '#' },
+      { name: 'Lojas', href: '#' },
+    ],
+  }
+  const handleAccountClick = (e) => {
+    e.preventDefault()
+  }
 
   return (
     <div className="bg-white">
@@ -200,7 +201,7 @@ export default function Example() {
                             {item.name}
                           </a>
                           <p aria-hidden="true" className="mt-1">
-                            Shop now
+                            Compre Agora
                           </p>
                         </div>
                       ))}
@@ -257,10 +258,10 @@ export default function Example() {
               <a href="#" className="-m-2 flex items-center p-2">
                 <img
                   alt=""
-                  src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg"
+                  src="https://www.svgrepo.com/show/248829/brazil.svg"
                   className="block h-auto w-5 shrink-0"
                 />
-                <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
+                <span className="ml-3 block text-base font-medium text-gray-900">BR</span>
                 <span className="sr-only">, change currency</span>
               </a>
             </div>
@@ -269,8 +270,8 @@ export default function Example() {
       </Dialog>
 
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
+        <p className="flex h-10 items-center justify-center bg-black px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
+          Frete grátis para compras a partir de R$ 100
         </p>
 
         <nav aria-label="Top" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -290,22 +291,24 @@ export default function Example() {
               <div className="ml-4 flex lg:ml-0">
                 <a href="#">
                   <span className="sr-only">Your Company</span>
-                  <img
-                    alt=""
-                    src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-                    className="h-8 w-auto"
-                  />
+                  <svg src={"http://www.w3.org/2000/svg"} fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-11">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                  </svg>
                 </a>
               </div>
 
               {/* Flyout menus */}
               <PopoverGroup className="hidden lg:ml-8 lg:block lg:self-stretch">
-                <div className="flex h-full space-x-8">
+                <div className="flex h-full space-x-8 focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-500">
                   {navigation.categories.map((category) => (
                     <Popover key={category.name} className="flex">
                       <div className="relative flex">
-                        <PopoverButton className="group relative flex items-center justify-center text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800 data-open:text-indigo-600">
+                        <PopoverButton className="group relative flex items-center justify-center text-sm font-medium text-gray-600 transition-colors duration-200 ease-out hover:text-gray-800 data-open:text-indigo-600 cursor-pointer">
                           {category.name}
+                          {category.name && (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          </svg>
+                          )}
                           <span
                             aria-hidden="true"
                             className="absolute inset-x-0 -bottom-px z-30 h-0.5 transition duration-200 ease-out group-data-open:bg-indigo-600"
@@ -334,7 +337,7 @@ export default function Example() {
                                       {item.name}
                                     </a>
                                     <p aria-hidden="true" className="mt-1">
-                                      Shop now
+                                      Compre Agora!
                                     </p>
                                   </div>
                                 ))}
@@ -379,31 +382,23 @@ export default function Example() {
                 </div>
               </PopoverGroup>
 
-              <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a href="/auth/signin" className="text-sm font-medium text-gray-700 hover:text-gray-800">
-                    Entrar
-                  </a>
+              <div className="ml-auto flex items-center space-x-3">
+                <div className="lg:flex lg:items-center lg:space-x-3">
+                  <ExpandingSearchBar></ExpandingSearchBar>
                   <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
                 </div>
 
-                <div className="hidden lg:ml-8 lg:flex">
+                <HeaderAuth/>
+
+                <div className="hidden lg:ml-3 lg:flex">
                   <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
                     <img
                       alt=""
-                      src="https://tailwindcss.com/plus-assets/img/flags/flag-canada.svg"
-                      className="block h-auto w-5 shrink-0"
+                      src="https://www.svgrepo.com/show/248829/brazil.svg"
+                      className="block h-auto w-7 shrink-0"
                     />
-                    <span className="ml-3 block text-sm font-medium">CAD</span>
+                    <span className="ml-3 block text-sm font-medium">BR</span>
                     <span className="sr-only">, change currency</span>
-                  </a>
-                </div>
-
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon aria-hidden="true" className="size-6" />
                   </a>
                 </div>
 
