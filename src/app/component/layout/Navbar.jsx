@@ -1,5 +1,5 @@
 "use client";
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useContext } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -18,9 +18,15 @@ import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outli
 import { HeaderAuth } from '../auth';
 import AccountDropdown from './AccountDropdown';
 import ExpandingSearchBar from './ExpandingSearchBar';
+import { CartContext, CartProvider } from "../../context/CartContext";
+import { useSession } from 'next-auth/react';
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
+  const { cart, setCart } = useContext(CartContext);
+  const { data: session, status } = useSession();
+  const totalItems = session ? cart.reduce((total, item) =>  total + item.quantity  , 0) : 0;
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
   const navigation = {
     categories: [
@@ -145,6 +151,13 @@ export default function NavBar() {
   const handleAccountClick = (e) => {
     e.preventDefault()
   }
+
+function handleEnterCart() {
+          if (!session) {
+            setShowSnackbar(true)
+            setTimeout(() => setShowSnackbar(false), 5000)
+          }
+        }
 
   return (
     <div className="bg-white">
@@ -388,7 +401,7 @@ export default function NavBar() {
                   <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
                 </div>
 
-                <HeaderAuth/>
+                <HeaderAuth />
 
                 <div className="hidden lg:ml-3 lg:flex">
                   <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
@@ -403,14 +416,22 @@ export default function NavBar() {
                 </div>
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                <div className="ml-4 flow-root lg:ml-6 relative">
+                  <a onClick={() => handleEnterCart()} 
+                  href={session ? "/Cart" : undefined}
+                  className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
-                      className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+                      className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500 cursor-pointer"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{totalItems}</span>
                     <span className="sr-only">items in cart, view bag</span>
+
+                    {showSnackbar && (
+                            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
+                                Você precisa iniciar sessão para ver o carrinho
+                            </div>
+                        )}
                   </a>
                 </div>
               </div>
