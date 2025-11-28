@@ -6,7 +6,6 @@ export const Products = [
       imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg',
       imageAlt: "Camiseta Preta",
       price: 'R$60',
-      color: 'Preta',
       category: "Novidades"
     },
     {
@@ -16,7 +15,6 @@ export const Products = [
       imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg',
       imageAlt: "Camiseta Branca",
       price: 'R$50',
-      color: 'Branco',
       category: "Novidades"
     },
     {
@@ -26,7 +24,6 @@ export const Products = [
       imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg',
       imageAlt: "Camiseta Cinza",
       price: 'R$60',
-      color: 'Cinza Escuro',
       category: "Novidades"
     },
     {
@@ -36,7 +33,6 @@ export const Products = [
       imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg',
       imageAlt: "Camiseta Pontilhada",
       price: 'R$67',
-      color: 'Bege Claro',
       category: "Novidades"
     },
 ]

@@ -1,5 +1,5 @@
 "use client";
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useContext } from 'react'
 import {
   Dialog,
   DialogBackdrop,
@@ -14,136 +14,150 @@ import {
   TabPanel,
   TabPanels,
 } from '@headlessui/react'
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { HeaderAuth } from '../auth';
+import AccountDropdown from './AccountDropdown';
 import ExpandingSearchBar from './ExpandingSearchBar';
+import { CartContext, CartProvider } from "../../context/CartContext";
+import { useSession } from 'next-auth/react';
 
-const navigation = {
-  categories: [
-    {
-      id: 'women',
-      name: 'Women',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
-          imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
-        },
-        {
-          name: 'Basic Tees',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
-          imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
-        },
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Dresses', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Denim', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
-          ],
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Significant Other', href: '#' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'men',
-      name: 'Men',
-      featured: [
-        {
-          name: 'New Arrivals',
-          href: '#',
-          imageSrc:
-            'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
-          imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
-        },
-        {
-          name: 'Artwork Tees',
-          href: '#',
-          imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
-          imageAlt:
-            'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
-        },
-      ],
-      sections: [
-        {
-          id: 'clothing',
-          name: 'Clothing',
-          items: [
-            { name: 'Tops', href: '#' },
-            { name: 'Pants', href: '#' },
-            { name: 'Sweaters', href: '#' },
-            { name: 'T-Shirts', href: '#' },
-            { name: 'Jackets', href: '#' },
-            { name: 'Activewear', href: '#' },
-            { name: 'Browse All', href: '#' },
-          ],
-        },
-        {
-          id: 'accessories',
-          name: 'Accessories',
-          items: [
-            { name: 'Watches', href: '#' },
-            { name: 'Wallets', href: '#' },
-            { name: 'Bags', href: '#' },
-            { name: 'Sunglasses', href: '#' },
-            { name: 'Hats', href: '#' },
-            { name: 'Belts', href: '#' },
-          ],
-        },
-        {
-          id: 'brands',
-          name: 'Brands',
-          items: [
-            { name: 'Re-Arranged', href: '#' },
-            { name: 'Counterfeit', href: '#' },
-            { name: 'Full Nelson', href: '#' },
-            { name: 'My Way', href: '#' },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: 'Company', href: '#' },
-    { name: 'Stores', href: '#' },
-  ],
-}
+export default function NavBar() {
+  const [open, setOpen] = useState(false);
+  const { cart, setCart } = useContext(CartContext);
+  const { data: session, status } = useSession();
+  const totalItems = session ? cart.reduce((total, item) =>  total + item.quantity  , 0) : 0;
+  const [showSnackbar, setShowSnackbar] = useState(false)
 
-export default function Example() {
-  const [open, setOpen] = useState(false)
+  const navigation = {
+    categories: [
+      {
+        id: 'women',
+        name: 'Feminino',
+        featured: [
+          {
+            name: 'Novidades',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-01.jpg',
+            imageAlt: 'Models sitting back to back, wearing Basic Tee in black and bone.',
+          },
+          {
+            name: 'Camisetas Básicas',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/mega-menu-category-02.jpg',
+            imageAlt: 'Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.',
+          },
+        ],
+        sections: [
+          {
+            id: 'clothing',
+            name: 'Roupas',
+            items: [
+              { name: 'Tops', href: '#' },
+              { name: 'Vestidos', href: '#' },
+              { name: 'Calças', href: '#' },
+              { name: 'Sweaters', href: '#' },
+              { name: 'Camisetas', href: '#' },
+              { name: 'Jaquetas', href: '#' },
+              { name: 'Esportivo', href: '#' },
+              { name: 'Explorar', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'Acessórios',
+            items: [
+              { name: 'Relógios', href: '#' },
+              { name: 'Carteiras', href: '#' },
+              { name: 'Bolsas', href: '#' },
+              { name: 'Óculos de Sol', href: '#' },
+              { name: 'Chapéus', href: '#' },
+              { name: 'Cintos', href: '#' },
+            ],
+          },
+          {
+            id: 'brands',
+            name: 'Marcas',
+            items: [
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+            ],
+          },
+        ],
+      },
+      {
+        id: 'men',
+        name: 'Masculino',
+        featured: [
+          {
+            name: 'Novidades',
+            href: '#',
+            imageSrc:
+              'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg',
+            imageAlt: 'Drawstring top with elastic loop closure and textured interior padding.',
+          },
+          {
+            name: 'Camisetas com Estampa',
+            href: '#',
+            imageSrc: 'https://tailwindcss.com/plus-assets/img/ecommerce-images/category-page-02-image-card-06.jpg',
+            imageAlt:
+              'Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.',
+          },
+        ],
+        sections: [
+          {
+            id: 'clothing',
+            name: 'Roupas',
+            items: [
+              { name: 'Calças', href: '#' },
+              { name: 'Sweaters', href: '#' },
+              { name: 'Camisetas', href: '#' },
+              { name: 'Jaquetas', href: '#' },
+              { name: 'Esportivo', href: '#' },
+              { name: 'Explorar', href: '#' },
+            ],
+          },
+          {
+            id: 'accessories',
+            name: 'Acessórios',
+            items: [
+              { name: 'Relógios', href: '#' },
+              { name: 'Carteiras', href: '#' },
+              { name: 'Bolsas', href: '#' },
+              { name: 'Óculos de Sol', href: '#' },
+              { name: 'Chapéus', href: '#' },
+              { name: 'Cintos', href: '#' },
+            ],
+          },
+          {
+            id: 'brands',
+            name: 'Marcas',
+            items: [
+              { name: 'Re-Arranged', href: '#' },
+              { name: 'Counterfeit', href: '#' },
+              { name: 'Full Nelson', href: '#' },
+              { name: 'My Way', href: '#' },
+            ],
+          },
+        ],
+      },
+    ],
+    pages: [
+      { name: 'Sobre nós', href: '#' },
+      { name: 'Lojas', href: '#' },
+    ],
+  }
+  const handleAccountClick = (e) => {
+    e.preventDefault()
+  }
+
+function handleEnterCart() {
+          if (!session) {
+            setShowSnackbar(true)
+            setTimeout(() => setShowSnackbar(false), 5000)
+          }
+        }
 
   return (
     <div className="bg-white">
@@ -290,8 +304,8 @@ export default function Example() {
               <div className="ml-4 flex lg:ml-0">
                 <a href="..">
                   <span className="sr-only">Your Company</span>
-                  <svg src={"http://www.w3.org/2000/svg"} fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-11">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                  <svg src={"http://www.w3.org/2000/svg"} fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-11">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
                   </svg>
                 </a>
               </div>
@@ -304,8 +318,8 @@ export default function Example() {
                       <div className="relative flex">
                         <PopoverButton className="group relative flex items-center justify-center text-sm font-medium text-gray-600 transition-colors duration-200 ease-out hover:text-gray-800 data-open:text-indigo-600 cursor-pointer">
                           {category.name}
-                          {category.name && (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="size-4">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          {category.name && (<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                           </svg>
                           )}
                           <span
@@ -387,7 +401,7 @@ export default function Example() {
                   <span aria-hidden="true" className="h-6 w-px bg-gray-200" />
                 </div>
 
-                <HeaderAuth/>
+                <HeaderAuth />
 
                 <div className="hidden lg:ml-3 lg:flex">
                   <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
@@ -402,14 +416,22 @@ export default function Example() {
                 </div>
 
                 {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                <div className="ml-4 flow-root lg:ml-6 relative">
+                  <a onClick={() => handleEnterCart()} 
+                  href={session ? "/Cart" : undefined}
+                  className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"
-                      className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+                      className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500 cursor-pointer"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">0</span>
+                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">{totalItems}</span>
                     <span className="sr-only">items in cart, view bag</span>
+
+                    {showSnackbar && (
+                            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
+                                Você precisa iniciar sessão para ver o carrinho
+                            </div>
+                        )}
                   </a>
                 </div>
               </div>

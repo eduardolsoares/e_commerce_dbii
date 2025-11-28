@@ -51,6 +51,7 @@ export function SignInButton() {
 }
 
 export function SignOutButton({ variant = "dropdown" }) {
+  
   const baseClasses =
     "text-sm text-gray-700 hover:text-black font-medium cursor-pointer transition-all outline-none focus:ring-0 focus:outline-none bg-gray-100";
   const variantClasses = {
@@ -60,7 +61,10 @@ export function SignOutButton({ variant = "dropdown" }) {
 
   return (
     <button
-      onClick={() => signOut()}
+      onClick={() => {
+        signOut({callbackUrl: "/"});
+        localStorage.removeItem("cart");
+      }}
       className={`${baseClasses} ${variantClasses[variant]}`}
     >
       Sign out

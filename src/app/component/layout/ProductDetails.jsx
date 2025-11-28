@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useParams } from "next/navigation";
 import { Products } from "./Products";
+import { HeaderAuth } from "../auth";
+import { CartContext, CartProvider } from "../../context/CartContext";
+import { useSession } from "next-auth/react";
 
 export default function ProductDetails() {
 
@@ -19,15 +22,42 @@ export default function ProductDetails() {
 
 
     const sizes = ["P", "M", "G", "GG"]
-    const colors = ["bg-green-900", "bg-teal-700", "bg-indigo-900"]
+    const colors = [
+        {name: "Verde", className: "bg-green-900"}, 
+        {name: "Vermelho" ,className: "bg-red-700"}, 
+        {name: "Azul", className: "bg-indigo-900"}
+    ]
     const [isOpen, setIsOpen] = useState(false)
+    const { cart, setCart, IncreaseQuantity } = useContext(CartContext);
+    const { data: session, status } = useSession()
+    const [showCartSnackbar, setShowCartSnackbar] = useState(false)
+    const [showSnackbar, setShowSnackbar] = useState(false)
+
+    function handleAddToCart() {
+        if (selectedColor == null || !selectedSize) {
+            setShowSnackbar(true)
+            setTimeout(() => setShowSnackbar(false), 5000)
+        }
+        if (!session) {
+            setShowCartSnackbar(true)
+            setTimeout(() => setShowCartSnackbar(false), 5000)
+        }
+        if (session && (selectedColor || selectedColor == 0) && selectedSize) {
+            IncreaseQuantity({
+                ...product,
+                quantity,
+                color: selectedColor,
+                size: selectedSize
+            })
+        }
+    }
 
     if (!product) {
         return <h1 className="text-center text-2xl p-20">Produto não encontrado</h1>
     }
 
     return (
-        <section className="w-full flex justify-center py-16 bg-white mb-40">
+        <section className="w-full flex justify-center py-16 bg-white mb-65">
             <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 px-4">
                 {isOpen && (
                     <div
@@ -110,10 +140,10 @@ export default function ProductDetails() {
                             {colors.map((c, i) => (
                                 <div
                                     key={i}
-                                    onClick={() => setSelectedColor(i)}
-                                    className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${c}`}
+                                    onClick={() => setSelectedColor(c.name)}
+                                    className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${c.className}`}
                                 >
-                                    {selectedColor === i && (
+                                    {selectedColor === c.name && (
                                         <span className="text-white text-sm font-bold">✓</span>
                                     )}
                                 </div>
@@ -153,9 +183,19 @@ export default function ProductDetails() {
                             <button className="cursor-pointer" onClick={() => setQuantity((q) => q + 1)}>+</button>
                         </div>
 
-                        <button className="bg-black text-white px-10 py-3 rounded-full hover:opacity-90 transition cursor-pointer">
+                        <button onClick={() => handleAddToCart()} className="bg-black text-white px-10 py-3 rounded-full hover:opacity-90 transition cursor-pointer">
                             Adicionar ao Carrinho
                         </button>
+                        {showCartSnackbar && (
+                            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
+                                Você precisa estar logado para adicionar ao carrinho
+                            </div>
+                        )}
+                        {showSnackbar && (
+                            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
+                                Você precisa escolher uma cor e um tamanho para adicionar ao carrinho
+                            </div>
+                        )}
                     </div>
 
                 </div>
