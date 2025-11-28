@@ -23,9 +23,9 @@ export default function ProductDetails() {
 
     const sizes = ["P", "M", "G", "GG"]
     const colors = [
-        {name: "Verde", class: "bg-green-900"}, 
-        {name: "Vermelho" ,class: "bg-red-700"}, 
-        {name: "Azul", class: "bg-indigo-900"}
+        {name: "Verde", className: "bg-green-900"}, 
+        {name: "Vermelho" ,className: "bg-red-700"}, 
+        {name: "Azul", className: "bg-indigo-900"}
     ]
     const [isOpen, setIsOpen] = useState(false)
     const { cart, setCart, IncreaseQuantity } = useContext(CartContext);
@@ -141,7 +141,7 @@ export default function ProductDetails() {
                                 <div
                                     key={i}
                                     onClick={() => setSelectedColor(c.name)}
-                                    className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${c}`}
+                                    className={`w-8 h-8 rounded-full cursor-pointer flex items-center justify-center ${c.className}`}
                                 >
                                     {selectedColor === c.name && (
                                         <span className="text-white text-sm font-bold">✓</span>
