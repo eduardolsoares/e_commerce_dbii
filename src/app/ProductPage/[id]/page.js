@@ -12,5 +12,4 @@ export default function ProductPage() {
       </footer>
     </div>
   )
-
 }
