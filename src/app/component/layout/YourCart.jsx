@@ -33,7 +33,7 @@ export default function YourCart() {
             {/* PRODUTOS */}
             <div className="md:col-span-2 bg-white rounded-xl border p-6">
               {cart.length === 0 && (
-                <p className="text-gray-500"></p>
+                <p className="text-gray-500">Nenhum item no carrinho.</p>
               )}
 
               {cart.map((item) => (
