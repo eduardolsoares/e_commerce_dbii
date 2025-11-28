@@ -3,7 +3,6 @@
 import { useState, useContext } from "react";
 import { useParams } from "next/navigation";
 import { Products } from "./Products";
-import { HeaderAuth } from "../auth";
 import { CartContext, CartProvider } from "../../context/CartContext";
 import { useSession } from "next-auth/react";
 
@@ -23,8 +22,8 @@ export default function ProductDetails() {
 
     const sizes = ["P", "M", "G", "GG"]
     const colors = [
-        {name: "Verde", className: "bg-green-900"}, 
-        {name: "Vermelho" ,className: "bg-red-700"}, 
+        {name: "Verde", className: "bg-green-900"},
+        {name: "Vermelho" ,className: "bg-red-700"},
         {name: "Azul", className: "bg-indigo-900"}
     ]
     const [isOpen, setIsOpen] = useState(false)
@@ -49,6 +48,8 @@ export default function ProductDetails() {
                 color: selectedColor,
                 size: selectedSize
             })
+            setCart()
+            console.log(cart)
         }
     }
 

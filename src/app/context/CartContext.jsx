@@ -6,12 +6,12 @@ export const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-    
+
     useEffect(() => {
         const storedCart = localStorage.getItem("cart");
 
         if (storedCart) {
-        setCart(JSON.parse(storedCart));
+          setCart(JSON.parse(storedCart));
         }
     }, []);
 
@@ -44,7 +44,7 @@ export function CartProvider({ children }) {
             Number(item.quantity) - Number(product.quantity || 1);
 
           if (newQuantity <= 0) {
-            return null; 
+            return null;
           }
 
           return {
@@ -55,7 +55,7 @@ export function CartProvider({ children }) {
 
         return item;
       })
-      .filter((item) => item !== null); 
+      .filter((item) => item !== null);
 
     return updatedCart;
   });
@@ -80,4 +80,3 @@ const RemoveFromCart = (id, selectedSize, selectedColor) => {
         </CartContext.Provider>
     );
 }
-
