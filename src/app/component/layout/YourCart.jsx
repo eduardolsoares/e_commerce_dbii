@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { CartContext } from "../../context/CartContext"
 import Link from "next/link"
 import prisma from "@/src/lib/prisma"
@@ -40,7 +40,7 @@ export default async function YourCart() {
                   className="flex items-center gap-6 border-b py-6 last:border-b-0"
                 >
                   <div className="bg-gray-100 p-3 rounded-lg">
-                    <Link href={`/ProductPage/${item.id}`}>
+                    <Link href={`/product/${item.id}`}>
                       <img
                         src={item.imageSrc}
                         className="w-24 h-24 object-contain cursor-pointer hover:scale-105 transition"
