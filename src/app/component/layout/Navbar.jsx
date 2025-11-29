@@ -23,8 +23,8 @@ import { useSession } from 'next-auth/react';
 
 export default function NavBar() {
   const [open, setOpen] = useState(false);
-  const { cart, setCart } = useContext(CartContext);
-  const { data: session, status } = useSession();
+  const { cart } = useContext(CartContext);
+  const { data: session } = useSession();
   const totalItems = session ? cart.reduce((total, item) =>  total + item.quantity  , 0) : 0;
   const [showSnackbar, setShowSnackbar] = useState(false)
 
@@ -417,7 +417,7 @@ function handleEnterCart() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6 relative">
-                  <a onClick={() => handleEnterCart()} 
+                  <a onClick={() => handleEnterCart()}
                   href={session ? "/Cart" : undefined}
                   className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
