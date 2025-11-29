@@ -418,7 +418,7 @@ function handleEnterCart() {
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6 relative">
                   <a onClick={() => handleEnterCart()}
-                  href={session ? "/Cart" : undefined}
+                  href={session ? "/cart" : undefined}
                   className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       aria-hidden="true"

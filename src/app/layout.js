@@ -2,7 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SessionWrapper from "./component/SessionWrapper";
 import { CartProvider } from "./context/CartContext";
-
+import { ToastContainer } from "react-toastify";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,6 +26,7 @@ export default function RootLayout({ children }) {
       >
       <CartProvider>
         <SessionWrapper>
+          <ToastContainer />
           {children}
         </SessionWrapper>
       </CartProvider>

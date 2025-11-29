@@ -1,14 +1,13 @@
-"use client"
+"use client";
 
 import { useContext, useState } from "react"
 import { CartContext } from "../../context/CartContext"
 import Link from "next/link"
-import ProductDetails from "./ProductDetails"
-
-export default function YourCart() {
-  const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } =
-    useContext(CartContext)
-
+import prisma from "@/src/lib/prisma"
+import { useSession } from "next-auth/react"
+import { toast } from 'react-toastify';
+export default async function YourCart() {
+  const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } = useContext(CartContext);
   const subtotal = cart.reduce(
     (total, item) => total + parseFloat(item.price.replace("R$", "").replace(",", ".")) * Number(item.quantity),
     0
@@ -41,7 +40,7 @@ export default function YourCart() {
                   className="flex items-center gap-6 border-b py-6 last:border-b-0"
                 >
                   <div className="bg-gray-100 p-3 rounded-lg">
-                    <Link href={`/ProductPage/${item.id}`}>
+                    <Link href={`/product/${item.id}`}>
                       <img
                         src={item.imageSrc}
                         className="w-24 h-24 object-contain cursor-pointer hover:scale-105 transition"
@@ -121,19 +120,9 @@ export default function YourCart() {
                 <span>R${total.toFixed(2)}</span>
               </div>
 
-              <Link href={cart.length > 0 ? "/Checkout" : "#"} scroll={false}>
-                <button
-                  disabled={cart.length === 0}
-                  className={`
-                  mt-8 w-full py-4 rounded-full transition
-                  ${cart.length === 0
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-black text-white cursor-pointer hover:opacity-90"}
-                  `}
-                >
-                  Pagamento →
-                </button>
-              </Link>
+              <button href={"/checkout"} className="mt-8 w-full bg-black text-white py-4 rounded-full cursor-pointer">
+                Pagamento →
+              </button>
             </div>
           </div>
         </section>
