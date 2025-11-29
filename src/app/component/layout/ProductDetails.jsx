@@ -48,8 +48,6 @@ export default function ProductDetails() {
                 color: selectedColor,
                 size: selectedSize
             })
-            setCart()
-            console.log(cart)
         }
     }
 

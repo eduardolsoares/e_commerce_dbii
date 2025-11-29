@@ -9,7 +9,6 @@ export default function YourCart() {
   const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } =
     useContext(CartContext)
 
-  console.log(cart)
   const subtotal = cart.reduce(
     (total, item) => total + parseFloat(item.price.replace("R$", "").replace(",", ".")) * Number(item.quantity),
     0
