@@ -51,7 +51,7 @@ export default function ProductRow({products, label}) {
               <div className="mt-4">
 
                 <h3 className="text-xl font-bold text-gray-900">
-                  <a href={`/ProductPage/${product.id}`}>
+                  <a href={`/product/${product.id}`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>

@@ -5,20 +5,8 @@ import { CartContext } from "../../context/CartContext"
 import Link from "next/link"
 import prisma from "@/src/lib/prisma"
 import { useSession } from "next-auth/react"
-
+import { toast } from 'react-toastify';
 export default async function YourCart() {
-  const { data } = useSession();
-
-  async function handleBuyButton(e) {
-    e.preventDefault();
-    await prisma.order.create({
-      data: {
-        userId: data.id,
-        status: "IN_PREPARATION",
-        products: {}
-      }
-    })
-  }
   const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } = useContext(CartContext);
   const subtotal = cart.reduce(
     (total, item) => total + parseFloat(item.price.replace("R$", "").replace(",", ".")) * Number(item.quantity),
@@ -132,8 +120,8 @@ export default async function YourCart() {
                 <span>R${total.toFixed(2)}</span>
               </div>
 
-              <button onClick={handleBuyButton} className="mt-8 w-full bg-black text-white py-4 rounded-full cursor-pointer">
-                Comprar →
+              <button href={"/checkout"} className="mt-8 w-full bg-black text-white py-4 rounded-full cursor-pointer">
+                Pagamento →
               </button>
             </div>
           </div>
