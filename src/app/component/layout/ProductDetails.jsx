@@ -31,6 +31,7 @@ export default function ProductDetails() {
     const { data: session, status } = useSession()
     const [showCartSnackbar, setShowCartSnackbar] = useState(false)
     const [showSnackbar, setShowSnackbar] = useState(false)
+    const [showAddSnackbar, setShowAddSnackbar] = useState(false)
 
     function handleAddToCart() {
         if (selectedColor == null || !selectedSize) {
@@ -48,6 +49,8 @@ export default function ProductDetails() {
                 color: selectedColor,
                 size: selectedSize
             })
+            setShowAddSnackbar(true)
+            setTimeout(() => setShowAddSnackbar(false), 5000)
         }
     }
 
@@ -193,6 +196,11 @@ export default function ProductDetails() {
                         {showSnackbar && (
                             <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
                                 Você precisa escolher uma cor e um tamanho para adicionar ao carrinho
+                            </div>
+                        )}
+                        {showAddSnackbar && (
+                            <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black text-white px-6 py-3 rounded-full shadow-lg z-50 transition">
+                                Produto adicionado ao carrinho!
                             </div>
                         )}
                     </div>
