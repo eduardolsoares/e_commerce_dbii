@@ -15,9 +15,8 @@ enum Role {
 
 enum Status {
   SOLD
-  AVAILABLE
-  UNAVAILABLE
   WAITING_FOR_PAYMENT
+  IN_PREPARATION
   IN_DELIVERY
 }
 
@@ -30,20 +29,19 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  wishlist      Product[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+  Order         Order[]
 }
 
 model Product {
   id        Int      @id
   name      String
   image     String?
-  status    Status
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   Int?
 }
 
 model Account {
@@ -83,4 +81,12 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+model Order {
+  id       Int       @id @default(autoincrement())
+  products Product[]
+  user     User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status   Status
+  userId   Int?
 }

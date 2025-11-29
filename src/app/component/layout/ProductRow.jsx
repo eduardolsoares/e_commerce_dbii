@@ -42,8 +42,8 @@ export default function ProductRow({products, label}) {
                            overflow-hidden lg:aspect-auto lg:h-80"
               >
                 <img
-                  alt={product.imageAlt}
-                  src={product.imageSrc}
+                  alt={product.name}
+                  src={product.image}
                   className="object-cover w-full h-full group-hover:opacity-75"
                 />
               </div>
@@ -51,7 +51,7 @@ export default function ProductRow({products, label}) {
               <div className="mt-4">
 
                 <h3 className="text-xl font-bold text-gray-900">
-                  <a href={product.href}>
+                  <a href={`/ProductPage/${product.id}`}>
                     <span aria-hidden="true" className="absolute inset-0" />
                     {product.name}
                   </a>
