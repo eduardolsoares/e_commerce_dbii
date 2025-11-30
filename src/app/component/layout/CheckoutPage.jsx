@@ -6,7 +6,6 @@ import { CartContext } from "../../context/CartContext";
 export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState("delivery");
   const { cart } = useContext(CartContext);
-
   const subtotal = cart.reduce(
     (total, item) =>
       total +
@@ -33,8 +32,8 @@ export default function CheckoutPage() {
           <div className="flex gap-4 mb-8">
             <button
               className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition cursor-pointer
-                ${shippingMethod === "delivery" 
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-600" 
+                ${shippingMethod === "delivery"
+                  ? "border-indigo-500 bg-indigo-50 text-indigo-600"
                   : "border-gray-300 bg-white"}
               `}
               onClick={() => setShippingMethod("delivery")}
@@ -44,8 +43,8 @@ export default function CheckoutPage() {
 
             <button
               className={`flex items-center gap-2 px-6 py-3 rounded-xl border transition cursor-pointer
-                ${shippingMethod === "pickup" 
-                  ? "border-indigo-500 bg-indigo-50 text-indigo-600" 
+                ${shippingMethod === "pickup"
+                  ? "border-indigo-500 bg-indigo-50 text-indigo-600"
                   : "border-gray-300 bg-white"}
               `}
               onClick={() => setShippingMethod("pickup")}
