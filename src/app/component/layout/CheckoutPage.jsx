@@ -19,6 +19,19 @@ export default function CheckoutPage() {
   const discount = subtotal * 0.2;
   const total = subtotal - discount + deliveryFee;
 
+  async function handlePayment() {
+  const res = await fetch("/api/orders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ cart, total }),
+  });
+
+  if (res.ok) {
+    router.push("/orders");
+  }
+}
+
+
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-12 flex justify-center">
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-16">
@@ -163,7 +176,8 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <button className="w-full mt-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 cursor-pointer">
+          <button className="w-full mt-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 cursor-pointer"
+            onClick={handlePayment}>
             Realizar Pagamento
           </button>
 
