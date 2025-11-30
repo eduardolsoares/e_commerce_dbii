@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useContext } from "react";
 import { useParams } from "next/navigation";
 import prisma from "@/src/lib/prisma";
@@ -25,7 +23,7 @@ export default async function ProductDetails() {
   const { IncreaseQuantity } = useContext(CartContext);
 
   const productId = Number(params.id);
-  const product = getProduct(productId)
+  const product = await getProduct(productId)
 
   const sizes = ["P", "M", "G", "GG"];
   const colors = [

@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "../../component/layout/Navbar";
 import LandingPageFooter from "../../component/layout/LandingPageFooter";
 import ProductDetails from "../../component/layout/ProductDetails";
