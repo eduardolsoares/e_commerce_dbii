@@ -1,19 +1,11 @@
+"use client";
 import { useState, useContext } from "react";
-import { useParams } from "next/navigation";
-import prisma from "@/src/lib/prisma";
 import { CartContext } from "../../context/CartContext";
-import { ToastContainer, toast } from 'react-toastify';
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
-async function getProduct(productId) {
-  const product = await prisma.product.findUnique({
-    where: {
-      id: productId
-    },
-  });
-  return product;
-}
-export default async function ProductDetails() {
-  const params = useParams();
+export default function ProductDetails({product}) {
+  const { data: session } = useSession()
   const [selectedSize, setSelectedSize] = useState("Large");
   const [quantity, setQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -21,9 +13,6 @@ export default async function ProductDetails() {
   const [showCartSnackbar, setShowCartSnackbar] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
   const { IncreaseQuantity } = useContext(CartContext);
-
-  const productId = Number(params.id);
-  const product = await getProduct(productId)
 
   const sizes = ["P", "M", "G", "GG"];
   const colors = [
@@ -48,7 +37,7 @@ export default async function ProductDetails() {
         color: selectedColor,
         size: selectedSize,
       });
-      toast("Produto adicionado ao carrinho!")
+      toast.success("Produto adicionado ao carrinho!")
     }
   }
 
@@ -60,7 +49,6 @@ export default async function ProductDetails() {
 
   return (
     <section className="w-full flex justify-center py-16 bg-white mb-65">
-      <ToastContainer />
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 px-4">
         {isOpen && (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
