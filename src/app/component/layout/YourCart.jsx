@@ -3,10 +3,7 @@
 import { useContext, useState } from "react"
 import { CartContext } from "../../context/CartContext"
 import Link from "next/link"
-import prisma from "@/src/lib/prisma"
-import { useSession } from "next-auth/react"
-import { toast } from 'react-toastify';
-export default async function YourCart() {
+export default function YourCart() {
   const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } = useContext(CartContext);
   const subtotal = cart.reduce(
     (total, item) => total + parseFloat(item.price.replace("R$", "").replace(",", ".")) * Number(item.quantity),
