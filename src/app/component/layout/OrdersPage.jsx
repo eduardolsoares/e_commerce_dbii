@@ -35,9 +35,9 @@ export default function OrdersPage({orders = []}) {
               {order.products?.map((product) => (
                 <div key={product.id} className="flex products-center justify-between gap-4">
                   <div className="flex products-center gap-4">
-                    <img src={product.image || '/placeholder.png'} alt={product.name} className="w-14 h-14 object-cover rounded-md bg-gray-100" />
+                    <img src={product.product.image || '/placeholder.png'} alt={product.product.name} className="w-14 h-14 object-cover rounded-md bg-gray-100" />
                     <div>
-                      <p className="font-medium">{product.name}</p>
+                      <p className="font-medium">{product.product.name}</p>
                       <p className="text-sm text-gray-500">{product.quantity} × {product.size || '—'} • {product.color || '—'}</p>
                     </div>
                   </div>

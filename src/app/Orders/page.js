@@ -11,8 +11,22 @@ async function getCurrentOrders(userEmail) {
     },
     select: {
       Order: {
-        include: {
-          products: true,
+        select: {
+          id: true,
+          products: {
+            select: {
+              quantity: true,
+              size: true,
+              color: true,
+              product: {
+                select: {
+                  name: true,
+                  image: true,
+                  price: true
+                }
+              }
+            }
+          }
         },
       },
     },
