@@ -7,9 +7,8 @@ import Link from "next/link"
 
 export default function YourCart() {
   const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } = useContext(CartContext);
-  console.log(cart)
   const subtotal = cart.reduce(
-    (total, item) => total + parseFloat(item.price.replace("R$", "").replace(",", ".")) * Number(item.quantity),
+    (total, item) => total + parseFloat(item.price) * Number(item.quantity),
     0
   )
 
@@ -42,7 +41,7 @@ export default function YourCart() {
                   <div className="bg-gray-100 p-3 rounded-lg">
                     <Link href={`/product/${item.id}`}>
                       <img
-                        src={item.imageSrc}
+                        src={item.image}
                         className="w-24 h-24 object-contain cursor-pointer hover:scale-105 transition"
                       />
                     </Link>
