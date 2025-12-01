@@ -1,6 +1,22 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { SignOutButton } from '../auth'
 export default function AccountDropdown() {
+  
+  function OrdersButton({ variant = "dropdown" }) {
+    const baseClasses =
+      "text-sm text-gray-700 hover:text-black font-medium cursor-pointer transition-all outline-none focus:ring-0 focus:outline-none bg-gray-100";
+    const variantClasses = {
+      dropdown: "block w-full text-left px-4 py-2",
+      inline: "px-3 py-1.5 rounded-md",
+    };
+    return (
+      <button
+        className={`${baseClasses} ${variantClasses[variant]}`}
+      >
+        Pedidos
+      </button>
+    );
+  }
   return (
     <Menu as="div" className="relative inline-block">
       <MenuButton className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 cursor-pointer">
@@ -16,6 +32,13 @@ export default function AccountDropdown() {
   "
       >
         <div className="py-1">
+          <MenuItem>
+            <a
+              href="/Orders"
+              className="block px-4 py-2 text-sm text-black-300 data-focus:bg-white/5 data-focus:text-white data-focus:outline-hidden"
+            ><OrdersButton />
+            </a>
+          </MenuItem>
           <MenuItem>
             <a
               href="#"
