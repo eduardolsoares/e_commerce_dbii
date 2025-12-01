@@ -118,6 +118,7 @@ AFTER INSERT ON "Order"
 FOR EACH ROW
 EXECUTE FUNCTION "UpdateProductStatusOnOrder"();
 
+
 -- View para analytics do usuário
 CREATE VIEW "UserOrderSummary" AS
 SELECT
@@ -125,11 +126,12 @@ SELECT
     u.name as user_name,
     u.email,
     COUNT(o.id) as total_orders,
-    COALESCE(SUM(oi.quantity * oi.purchasedPrice), 0) as total_spent,
+    COALESCE(SUM(op.quantity * op.), 0) as total_spent,
     MAX(o.createdAt) as last_order_date
 FROM "User" u
 LEFT JOIN "Order" o ON u.id = o."userId"
-LEFT JOIN "orderProduct" oi ON o.id = oi."orderId"
+LEFT JOIN "OrderProduct" op ON o.id = op."orderId"
+LEFT JOIN "Product" p ON p.id
 GROUP BY u.id, u.name, u.email;
 
 -- Procedure que calcula o preço total
