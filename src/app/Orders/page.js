@@ -13,6 +13,7 @@ async function getCurrentOrders(userEmail) {
       Order: {
         select: {
           id: true,
+          createdAt: true,
           products: {
             select: {
               quantity: true,

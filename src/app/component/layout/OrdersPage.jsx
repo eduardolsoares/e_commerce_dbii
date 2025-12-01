@@ -23,7 +23,7 @@ export default function OrdersPage({orders = []}) {
             <header className="flex products-start justify-between mb-4">
               <div>
                 <h2 className="text-lg font-medium">Pedido #{String(order.id).slice(0,8)}</h2>
-                <p className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleString()}</p>
+                <p className="text-sm text-gray-500">Pedido feito em {new Date(order.createdAt).toLocaleString()}</p>
               </div>
               <div className="text-right">
                 <span className="text-sm text-gray-500">Itens</span>
@@ -43,7 +43,7 @@ export default function OrdersPage({orders = []}) {
                   </div>
 
                   <div className="text-right">
-                    <p className="font-semibold">R${(Number(product.price) || 0).toFixed(2)}</p>
+                    <p className="font-semibold">R${(product.product.price || 0).toFixed(2)}</p>
                   </div>
                 </div>
               ))}
