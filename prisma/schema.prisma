@@ -34,14 +34,15 @@ model User {
 }
 
 model Product {
-  id        Int         @id
-  name      String
-  image     String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  Order     Order?      @relation(fields: [orderId], references: [id])
-  orderId   Int?
+  id           Int            @id
+  name         String
+  image        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Order        Order?         @relation(fields: [orderId], references: [id])
+  orderId      Int?
   OrderProduct OrderProduct[]
+  price        Float          @default(10)
 }
 
 model Account {
@@ -84,25 +85,25 @@ model VerificationToken {
 }
 
 model Order {
-  id       Int         @id @default(autoincrement())
-  products Product[]
-  user     User?       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status   Status
-  userId   Int?
-  items    OrderProduct[]
+  id        Int            @id @default(autoincrement())
+  user      User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    Status
+  userId    Int?
+  products  OrderProduct[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now()) @updatedAt
+  Product   Product[]
 }
 
 model OrderProduct {
-  id        Int     @id @default(autoincrement())
   orderId   Int
   order     Order   @relation(fields: [orderId], references: [id])
   productId Int
   product   Product @relation(fields: [productId], references: [id])
 
-  quantity       Int
-  purchasedPrice Float
-  color          String?
-  size           String?
+  quantity Int
+  color    String?
+  size     String?
 
-  @@unique([orderId, productId])
+  @@id([orderId, productId])
 }
