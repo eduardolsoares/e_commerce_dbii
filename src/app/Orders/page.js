@@ -23,7 +23,8 @@ async function getCurrentOrders(userEmail) {
                 select: {
                   name: true,
                   image: true,
-                  price: true
+                  price: true,
+                  id: true
                 }
               }
             }
