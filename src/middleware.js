@@ -1,5 +1,5 @@
 import { withAuth } from "next-auth/middleware"
-const protectedRoutes = ["/account", "/cart"];
+const protectedRoutes = ["/account", "/cart", "/Orders"];
 
 export default withAuth(
   function middleware(req) {
