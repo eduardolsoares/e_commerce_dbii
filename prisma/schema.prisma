@@ -87,7 +87,7 @@ model Order {
   id        Int            @id @default(autoincrement())
   user      User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   status    Status
-  userId    Int?
+  userId    Int
   products  OrderProduct[]
   createdAt DateTime       @default(now())
   updatedAt DateTime       @default(now()) @updatedAt

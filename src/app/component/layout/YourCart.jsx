@@ -5,21 +5,17 @@ import { CartContext } from "../../context/CartContext"
 import Link from "next/link"
 
 
-export default function YourCart() {
+export default function YourCart({ createOrder, userId }) {
   const { cart, IncreaseQuantity, DecreaseQuantity, RemoveFromCart } = useContext(CartContext);
   const subtotal = cart.reduce(
     (total, item) => total + parseFloat(item.price) * Number(item.quantity),
     0
   )
-
   const delivery = subtotal - subtotal * (96 / 100)
   const discount = subtotal * 0.2
   const total = subtotal - discount + delivery
-
   return (
     <div className="min-h-screen flex flex-col">
-
-      {/* CONTEÚDO PRINCIPAL */}
       <main className="flex-1">
         <section className="max-w-6xl mx-auto py-20 px-4 mb-30">
 
@@ -119,7 +115,7 @@ export default function YourCart() {
                 <span>R${total.toFixed(2)}</span>
               </div>
 
-              <button href={"/checkout"} className="mt-8 w-full bg-black text-white py-4 rounded-full cursor-pointer">
+              <button onClick={() => createOrder(userId, cart)} className="mt-8 w-full bg-black text-white py-4 rounded-full cursor-pointer">
                 Pagamento →
               </button>
             </div>

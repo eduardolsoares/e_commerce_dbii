@@ -3,33 +3,20 @@
 import { useState, useContext } from "react";
 import { CartContext } from "../../context/CartContext";
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ finalizeOrder, orderId }) {
   const [shippingMethod, setShippingMethod] = useState("delivery");
   const { cart } = useContext(CartContext);
   const subtotal = cart.reduce(
     (total, item) =>
       total +
-      parseFloat(item.price.replace("R$", "").replace(",", ".")) *
-        Number(item.quantity),
+      item.price *
+      Number(item.quantity),
     0
   );
-
+  console.log(orderId)
   const deliveryFee = subtotal > 0 ? subtotal * 0.04 : 0;
   const discount = subtotal * 0.2;
   const total = subtotal - discount + deliveryFee;
-
-  async function handlePayment() {
-  const res = await fetch("/api/orders", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ cart, total }),
-  });
-
-  if (res.ok) {
-    router.push("/orders");
-  }
-}
-
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-12 flex justify-center">
@@ -125,7 +112,7 @@ export default function CheckoutPage() {
           {cart.map((item) => (
             <div key={`${item.id}-${item.color}-${item.size}`} className="flex items-center gap-4 mb-6">
               <img
-                src={item.imageSrc}
+                src={item.image}
                 className="w-20 rounded-lg border"
               />
 
@@ -176,7 +163,7 @@ export default function CheckoutPage() {
           </div>
 
           <button className="w-full mt-8 py-4 bg-indigo-600 text-white rounded-xl font-semibold hover:bg-indigo-700 cursor-pointer"
-            onClick={handlePayment}>
+            onClick={() => finalizeOrder(orderId)}>
             Realizar Pagamento
           </button>
 
@@ -184,7 +171,7 @@ export default function CheckoutPage() {
             <span>🔒</span>
             <p className="text-gray-600">
               <strong>Secure Checkout – SSL Encrypted</strong><br />
-              Ensuring your financial and personal details are secure during every transaction.
+              Garantindo que a compra seja feita com segurança.
             </p>
           </div>
         </div>
