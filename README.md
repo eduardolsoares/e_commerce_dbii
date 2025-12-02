@@ -383,6 +383,6 @@ BEGIN
 END;
 $$;
 ```
-
+[Modelo logico](https://excalidraw.com/#json=GxaYRi0_TYJUo2DMnCPnu,HYdJcm0x9L3Xa2beYJxAAg)
 [Schema final do banco de dados](https://github.com/eduardolsoares/e_commerce_dbii/blob/dev/schema.sql)
 
