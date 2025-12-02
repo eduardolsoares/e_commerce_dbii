@@ -40,8 +40,6 @@ model Product {
   image        String?
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
-  Order        Order?         @relation(fields: [orderId], references: [id])
-  orderId      Int?
   OrderProduct OrderProduct[]
   price        Float          @default(10)
 }
@@ -93,7 +91,6 @@ model Order {
   products  OrderProduct[]
   createdAt DateTime       @default(now())
   updatedAt DateTime       @default(now()) @updatedAt
-  Product   Product[]
 }
 
 model OrderProduct {

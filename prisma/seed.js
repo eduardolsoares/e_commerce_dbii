@@ -3,15 +3,6 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const user = await prisma.user.upsert({
-    where: { email: "lkay.kts@gmail.com" },
-    update: {},
-    create: {
-      email: "lkay.kts@gmail.com",
-      name: "Admin",
-    },
-  });
-  console.log({ user });
 }
 main()
   .then(() => prisma.$disconnect())
