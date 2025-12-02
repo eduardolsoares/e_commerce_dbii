@@ -149,9 +149,7 @@ Gerencia tokens de verificação de email e reset de senha [9](#3-8) :
 
 ### Padrões Comuns de Queries
 
-Baseado no schema, aqui estão queries Prisma típicas e seus equivalentes SQL:
-
-## Lookup de Autenticação de Usuário
+## Lookup de Autenticação de Usuário com WITH
 
 **Prisma:**
 ```javascript
@@ -163,14 +161,32 @@ const user = await prisma.user.findUnique({
 
 **SQL:**
 ```sql
+WITH UsuarioInfo AS (
+    SELECT 
+        "id", "name", "role", "email", "emailVerified", "image", "createdAt", "updatedAt"
+    FROM "User"
+    WHERE "email" = 'user@example.com'
+),
+ContasUsuario AS (
+    SELECT 
+        a.*, a."createdAt" AS "accountCreatedAt", a."updatedAt" AS "accountUpdatedAt"
+    FROM "Account" a
+    JOIN UsuarioInfo ui ON a."userId" = ui."id"
+),
+SessoesUsuario AS (
+    SELECT 
+        s."id" AS "sessionId", s."sessionToken", s."expires", s."createdAt" AS "sessionCreatedAt", s."updatedAt" AS "sessionUpdatedAt", s."userId"
+    FROM "Session" s
+    JOIN UsuarioInfo ui ON s."userId" = ui."id"
+)
+-- Consulta principal
 SELECT 
-  u."id", u."name", u."role", u."email", u."emailVerified", u."image", u."createdAt", u."updatedAt",
-  a."provider", a."providerAccountId", a."type", a."refresh_token", a."access_token", a."expires_at", a."token_type", a."scope", a."id_token", a."session_state", a."createdAt" AS "accountCreatedAt", a."updatedAt" AS "accountUpdatedAt",
-  s."id" AS "sessionId", s."sessionToken", s."expires", s."createdAt" AS "sessionCreatedAt", s."updatedAt" AS "sessionUpdatedAt"
-FROM "User" u
-LEFT JOIN "Account" a ON a."userId" = u."id"
-LEFT JOIN "Session" s ON s."userId" = u."id"
-WHERE u."email" = 'user@example.com';
+    ui.*,
+    ca.provider, ca."providerAccountId", ca.type, ca."refresh_token", ca."access_token", ca."expires_at", ca."token_type", ca.scope, ca."id_token", ca."session_state", ca."accountCreatedAt", ca."accountUpdatedAt",
+    su."sessionId", su."sessionToken", su.expires, su."sessionCreatedAt", su."sessionUpdatedAt"
+FROM UsuarioInfo ui
+LEFT JOIN ContasUsuario ca ON ca."userId" = ui.id
+LEFT JOIN SessoesUsuario su ON su."userId" = ui.id;
 ```
 
 ## Pegar produtos para landing page
@@ -218,7 +234,7 @@ RETURNING "id", "userId", "status", "createdAt", "updatedAt";
 ```
 
 
-## Exemplo de transação
+## Exemplo de transação com subconsulta de WHEREs
 
 **Prisma:**
 ```javascript
