@@ -9,6 +9,16 @@ export default function OrdersPage({orders = []}) {
       </div>
     );
   }
+  const calculateFinalPrice = (order) => {
+    const subtotal = order.products.reduce(
+      (accumulator, currentProduct) => accumulator + (currentProduct.product.price * currentProduct.quantity),
+      0
+    ).toFixed(2)
+    const discount = subtotal * 0.2
+    const deliveryFee = subtotal > 0 ? subtotal * 0.04 : 0;
+    return subtotal - discount + deliveryFee
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col products-center">
       <h1 className="text-3xl font-semibold mb-6">Seus Pedidos</h1>
@@ -53,7 +63,10 @@ export default function OrdersPage({orders = []}) {
               <div className="text-sm text-gray-600">Status: <span className="font-medium text-gray-800">{order.status || 'Paid'}</span></div>
               <div className="text-right">
                 <div className="text-sm text-gray-500">Total</div>
-                <div className="font-bold">R${(Number(order.total_value) || 0).toFixed(2)}</div>
+                <div className="font-bold">R${
+                        calculateFinalPrice(order).toFixed(2)
+                      }
+                </div>
               </div>
             </footer>
           </article>

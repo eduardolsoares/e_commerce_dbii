@@ -40,7 +40,7 @@ export default function AccountDashboard({ analytics }) {
                         {analytics.email}
                     </td>
                     <td class="px-6 py-4">
-                        {analytics.total_spent}
+                        R${analytics.total_spent}
                     </td>
                     <td class="px-6 py-4">
                       {new Date(analytics.last_order_date).toLocaleDateString()}

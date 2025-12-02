@@ -32,6 +32,7 @@ async function createOrder(userId, items) {
   redirect(`/checkout/${newOrder.id}`)
 }
 
+
 export default async function Cart() {
   const session = await getServerSession(authConfig)
   return (

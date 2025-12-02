@@ -13,7 +13,6 @@ export default function CheckoutPage({ finalizeOrder, orderId }) {
       Number(item.quantity),
     0
   );
-  console.log(orderId)
   const deliveryFee = subtotal > 0 ? subtotal * 0.04 : 0;
   const discount = subtotal * 0.2;
   const total = subtotal - discount + deliveryFee;
@@ -121,7 +120,7 @@ export default function CheckoutPage({ finalizeOrder, orderId }) {
                 <p className="text-sm text-gray-500">{item.quantity}x</p>
                 <p className="text-sm text-gray-500">Cor: {item.color}</p>
                 <p className="text-sm text-gray-500">Tamanho: {item.size}</p>
-                <p className="font-semibold mt-1">{item.price}</p>
+                <p className="font-semibold mt-1">R${item.price}</p>
               </div>
             </div>
           ))}

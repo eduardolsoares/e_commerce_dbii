@@ -51,7 +51,7 @@ export default function YourCart({ createOrder, userId }) {
                     <p className="text-sm text-gray-400">
                       Cor: {item.color}
                     </p>
-                    <p className="font-bold mt-2">{item.price}</p>
+                    <p className="font-bold mt-2">R${item.price}</p>
                   </div>
 
                   <div className="flex flex-col items-end gap-3">

@@ -98,26 +98,38 @@ ALTER TABLE "public"."OrderProduct" ADD CONSTRAINT "OrderProduct_orderId_fkey" F
 ALTER TABLE "public"."OrderProduct" ADD CONSTRAINT "OrderProduct_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 
-CREATE OR REPLACE FUNCTION "UpdateProductStatusOnOrder"()
+CREATE OR REPLACE FUNCTION validate_order_status_transition()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Atualizar status do produto para SOLD quando um pedido for feito
-    UPDATE "Product"
-    SET "orderId" = NEW.id
-    FROM "orderProduct"
-    WHERE "Product".id = "orderProduct"."productId"
-    AND "orderProduct"."orderId" = NEW.id;
-    RETURN NEW;
+  IF OLD.status IS DISTINCT FROM NEW.status THEN
+    IF OLD.status = 'WAITING_FOR_PAYMENT' AND NEW.status NOT IN ('PAID', 'WAITING_FOR_PAYMENT') THEN
+      RAISE EXCEPTION 'Invalid status transition from WAITING_FOR_PAYMENT to %', NEW.status;
+    END IF;
+
+    IF OLD.status = 'PAID' AND NEW.status NOT IN ('SHIPPED', 'PAID') THEN
+      RAISE EXCEPTION 'Invalid status transition from PAID to %', NEW.status;
+    END IF;
+
+    IF OLD.status = 'SHIPPED' AND NEW.status NOT IN ('DELIVERED', 'SHIPPED') THEN
+      RAISE EXCEPTION 'Invalid status transition from SHIPPED to %', NEW.status;
+    END IF;
+
+    IF OLD.status = 'DELIVERED' AND NEW.status != 'DELIVERED' THEN
+      RAISE EXCEPTION 'Cannot change status from DELIVERED (final state)';
+    END IF;
+  END IF;
+
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER "trigger_update_product_on_order"
-AFTER INSERT ON "Order"
+CREATE TRIGGER order_status_validation_trigger
+BEFORE INSERT OR UPDATE ON "Order"
 FOR EACH ROW
-EXECUTE FUNCTION "UpdateProductStatusOnOrder"();
+EXECUTE FUNCTION validate_order_status_transition();
 
 -- View para analytics do usuário, ver quantos pedidos o usuário fez, total gasto e a data da última compra
-CREATE VIEW "UserOrderSummary" AS
+CREATE OR REPLACE VIEW "UserOrderSummary" AS
 SELECT
     u.id as user_id,
     u.name as user_name,

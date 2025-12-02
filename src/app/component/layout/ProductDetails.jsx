@@ -118,7 +118,7 @@ export default function ProductDetails({product}) {
 
 
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-2xl font-bold">{product.price}</span>
+            <span className="text-2xl font-bold">R${product.price}</span>
           </div>
 
           {/* Colors */}

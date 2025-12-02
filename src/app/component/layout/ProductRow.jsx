@@ -65,7 +65,7 @@ export default function ProductRow({products, label}) {
                   <p className="ml-2 text-sm text-gray-500">4.0/5</p>
                 </div>
 
-                <p className="mt-2 text-2xl font-bold text-gray-900">{product.price}</p>
+                <p className="mt-2 text-2xl font-bold text-gray-900">R${product.price}</p>
               </div>
             </div>
           ))}
