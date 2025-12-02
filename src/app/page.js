@@ -21,11 +21,6 @@ export default async function LandingPage() {
           <ProductRow products={products} label={"Novidades"}/>
           <Divider />
           <div className="-mt-24">
-          <ProductRow products={products} label = {"Itens mais vendidos"} />
-          </div>
-          <Divider />
-          <div className="mb-30 -mt-24">
-          <ProductRow products={products} label = {"Itens para você"} />
           </div>
           <Divider />
         </section>
