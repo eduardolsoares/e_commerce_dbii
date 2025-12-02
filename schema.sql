@@ -1,7 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
 CREATE TYPE "public"."Role" AS ENUM ('USER', 'ADMIN');
-CREATE TYPE "public"."Status" AS ENUM ('PAID', 'SHIPPED', 'DELIVERED');
+CREATE TYPE "public"."Status" AS ENUM ('WAITING_FOR_PAYMENT', 'PAID', 'SHIPPED', 'DELIVERED');
 
 CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
@@ -16,14 +16,13 @@ CREATE TABLE "public"."User" (
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
-
 CREATE TABLE "public"."Product" (
     "id" INTEGER NOT NULL,
     "name" TEXT NOT NULL,
     "image" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "orderId" INTEGER,
+    "price" DOUBLE PRECISION NOT NULL DEFAULT 10,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -68,34 +67,33 @@ CREATE TABLE "public"."VerificationToken" (
 CREATE TABLE "public"."Order" (
     "id" SERIAL NOT NULL,
     "status" "public"."Status" NOT NULL,
-    "userId" INTEGER,
+    "userId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
 CREATE TABLE "public"."OrderProduct" (
-    "id" SERIAL NOT NULL,
     "orderId" INTEGER NOT NULL,
     "productId" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
-    "purchasedPrice" DOUBLE PRECISION NOT NULL,
     "color" TEXT,
     "size" TEXT,
 
-    CONSTRAINT "OrderProduct_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "OrderProduct_pkey" PRIMARY KEY ("orderId","productId")
 );
 
-
+-- Criação dos indexes nas fkeys para performance
 CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
 CREATE UNIQUE INDEX "Session_session_token_key" ON "public"."Session"("session_token");
-CREATE UNIQUE INDEX "OrderProduct_orderId_productId_key" ON "public"."OrderProduct"("orderId", "productId");
 
-ALTER TABLE "public"."Product" ADD CONSTRAINT "Product_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Order"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 ALTER TABLE "public"."Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."OrderProduct" ADD CONSTRAINT "OrderProduct_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "public"."Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 ALTER TABLE "public"."OrderProduct" ADD CONSTRAINT "OrderProduct_productId_fkey" FOREIGN KEY ("productId") REFERENCES "public"."Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
 
 CREATE OR REPLACE FUNCTION "UpdateProductStatusOnOrder"()
 RETURNS TRIGGER AS $$
@@ -116,7 +114,7 @@ FOR EACH ROW
 EXECUTE FUNCTION "UpdateProductStatusOnOrder"();
 
 
--- View para analytics do usuário
+-- View para analytics do usuário, ver quantos pedidos o usuário fez, total gasto e a data da última compra
 CREATE VIEW "UserOrderSummary" AS
 SELECT
     u.id as user_id,
