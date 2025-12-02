@@ -4,16 +4,17 @@ import OrdersPage from "../component/layout/OrdersPage";
 import { authConfig } from "@/auth";
 import { getServerSession } from "next-auth";
 
-async function getCurrentOrders(userEmail) {
+async function getCurrentOrders(userId) {
   const result = await prisma.user.findUnique({
     where: {
-      email: userEmail,
+      id: userId
     },
     select: {
       Order: {
         select: {
           id: true,
           createdAt: true,
+          status: true,
           products: {
             select: {
               quantity: true,
@@ -40,8 +41,7 @@ async function getCurrentOrders(userEmail) {
 
 export default async function Orders() {
   const session = await getServerSession(authConfig);
-  const orders = await getCurrentOrders(session.user.email)
-
+  const orders = await getCurrentOrders(Number(session.user.id))
   return (
     <div className="min-h-screen bg-white text-gray-900 flex flex-col">
     <NavBar />
