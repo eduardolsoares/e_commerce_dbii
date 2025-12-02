@@ -10,29 +10,42 @@ export const authConfig = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
   callbacks: {
     async jwt({ token, account, user }) {
-      // On initial sign in, persist provider tokens and role (if any)
+      if (user) {
+        token.userId = user.id;
+
+        if (user.role) {
+          token.role = user.role;
+        }
+      }
       if (account) {
-        // account fields may be snake_case (access_token) or camelCase (accessToken)
-        token.accessToken = account.accessToken;
-        token.refreshToken = account.refreshToken;
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
         token.provider = account.provider;
+
+        if (account.id_token) {
+            token.idToken = account.id_token;
+        }
       }
-      if (user && user.role) {
-        token.role = user.role;
+
+      if (!token.userId && token.sub) {
+        token.userId = token.sub;
       }
+
       return token;
     },
+
     async session({ session, token }) {
-      // Expose token fields to the client session when available.
-      // When using database sessions (Prisma adapter) `token` may be undefined,
-      // so guard access to avoid runtime errors.
       session.user = session.user || {};
+
       if (token) {
-        if (token.accessToken) session.user.accessToken = token.accessToken;
-        if (token.refreshToken) session.user.refreshToken = token.refreshToken;
-        if (token.provider) session.user.provider = token.provider;
+        if (token.userId) {
+          session.user.id = token.userId;
+        }
         if (token.role) session.user.role = token.role;
       }
       return session;
