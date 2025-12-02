@@ -1,8 +1,10 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
+-- Criação dos enums
 CREATE TYPE "public"."Role" AS ENUM ('USER', 'ADMIN');
 CREATE TYPE "public"."Status" AS ENUM ('WAITING_FOR_PAYMENT', 'PAID', 'SHIPPED', 'DELIVERED');
 
+-- Criação das tabelas
 CREATE TABLE "public"."User" (
     "id" SERIAL NOT NULL,
     "name" TEXT,
@@ -88,6 +90,7 @@ CREATE TABLE "public"."OrderProduct" (
 CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");
 CREATE UNIQUE INDEX "Session_session_token_key" ON "public"."Session"("session_token");
 
+-- Atribuição das referências das foreign keys
 ALTER TABLE "public"."Account" ADD CONSTRAINT "Account_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "public"."Order" ADD CONSTRAINT "Order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -112,7 +115,6 @@ CREATE TRIGGER "trigger_update_product_on_order"
 AFTER INSERT ON "Order"
 FOR EACH ROW
 EXECUTE FUNCTION "UpdateProductStatusOnOrder"();
-
 
 -- View para analytics do usuário, ver quantos pedidos o usuário fez, total gasto e a data da última compra
 CREATE VIEW "UserOrderSummary" AS
